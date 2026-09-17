@@ -1,0 +1,429 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>ספיקי — עמוד נחיתה</title>
+<meta name="description" content="Speaky landing page, midnight-storybook direction: a bold departure from the in-app palette for the Facebook campaign." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Alegreya:ital,wght@0,600;0,700;0,800;1,600&family=Assistant:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<style>
+  /* ---- MIDNIGHT STORYBOOK — deliberate departure from the in-app palette ----
+     Night-sky canvas + a single warm gold "lantern light" accent + one rare
+     coral spark. Echoes the product's own chapter/journey mechanic in the
+     structure below (five "chapters", a glowing path) rather than a generic
+     value-prop grid. Single dark theme throughout, one deliberate bloom to
+     bright warm light at the finale — the page's one spent risk. */
+  :root{
+    --night:#0B0E24;
+    --night-2:#141A3D;
+    --night-3:#1B2352;
+    --gold:#F5B542;
+    --gold-soft:#FDE7B8;
+    --coral:#FF6F61;
+    --cream:#FBF4E4;
+    --lav:#A6ABD1;
+    --lav-dim:#7A7FAA;
+    --line:rgba(245,181,66,0.22);
+    --ink-on-gold:#241638;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  html,body{overflow-x:hidden;}
+  body{
+    margin:0;
+    font-family:'Assistant',sans-serif;
+    color:var(--cream);
+    background:
+      radial-gradient(60% 45% at 82% 6%, rgba(245,181,66,0.10) 0%, rgba(245,181,66,0) 60%),
+      radial-gradient(55% 40% at 10% 18%, rgba(255,111,97,0.07) 0%, rgba(255,111,97,0) 60%),
+      linear-gradient(180deg, #0B0E24 0%, #0F1330 40%, #141A3D 100%);
+    -webkit-font-smoothing:antialiased;
+  }
+  .disp{font-family:'Alegreya','Assistant',serif; font-weight:700; letter-spacing:-0.01em;}
+  .wrap{max-width:1160px; margin:0 auto; padding-inline:24px; position:relative;}
+  img{max-width:100%;}
+  [hidden]{display:none!important;}
+  ::selection{background:var(--gold); color:var(--ink-on-gold);}
+
+  /* starfield, decorative, fixed, never on a scrolling repaint surface.
+     Breathes continuously (opacity only, GPU-cheap) so the page always has
+     ambient motion, not just one-shot entrance reveals. */
+  .stars{position:fixed; inset:0; z-index:0; pointer-events:none; opacity:.55;
+    background-image:
+      radial-gradient(1.6px 1.6px at 12% 18%, #fff, transparent),
+      radial-gradient(1.3px 1.3px at 28% 62%, #fff, transparent),
+      radial-gradient(1.8px 1.8px at 46% 12%, #fff, transparent),
+      radial-gradient(1.2px 1.2px at 63% 38%, #fff, transparent),
+      radial-gradient(1.5px 1.5px at 78% 72%, #fff, transparent),
+      radial-gradient(1.3px 1.3px at 88% 22%, #fff, transparent),
+      radial-gradient(1.6px 1.6px at 35% 85%, #fff, transparent),
+      radial-gradient(1.2px 1.2px at 95% 55%, #fff, transparent);
+    background-repeat:no-repeat;
+  }
+  @media (prefers-reduced-motion: no-preference){ .stars{animation:twinkle 6s ease-in-out infinite;} }
+  @keyframes twinkle{0%,100%{opacity:.4;} 50%{opacity:.75;}}
+
+  .reveal{opacity:1; transform:none;}
+  @media (prefers-reduced-motion: no-preference){
+    .reveal{opacity:0; transform:translateY(20px); transition:opacity .55s cubic-bezier(.16,1,.3,1), transform .55s cubic-bezier(.16,1,.3,1);}
+    .reveal.in{opacity:1; transform:translateY(0);}
+  }
+
+  /* ---------- nav ---------- */
+  nav{position:sticky; top:0; z-index:40; backdrop-filter:blur(12px); background:rgba(11,14,36,0.62); border-bottom:1px solid var(--line);}
+  nav .inner{display:flex; align-items:center; justify-content:space-between; padding-block:14px; min-height:64px; position:relative; z-index:1;}
+  .wordmark{display:flex; align-items:center; gap:9px; font-family:'Alegreya',serif; font-weight:700; font-size:21px; color:var(--cream);}
+  .wordmark .spark{width:8px; height:8px; border-radius:999px; background:var(--gold); box-shadow:0 0 0 5px rgba(245,181,66,0.16), 0 0 10px 2px rgba(245,181,66,0.5);}
+
+  .btn-gold{
+    display:inline-flex; align-items:center; gap:9px; justify-content:center; white-space:nowrap;
+    background:linear-gradient(180deg, var(--gold-soft), var(--gold));
+    color:var(--ink-on-gold); font-weight:800; font-size:16px;
+    padding:15px 26px; border-radius:999px; border:none; cursor:pointer;
+    box-shadow:0 18px 34px -16px rgba(245,181,66,0.55), inset 0 -2px 0 rgba(36,22,56,0.18);
+    transition:transform .15s ease, box-shadow .15s ease; text-decoration:none;
+  }
+  @media (hover: hover) and (pointer: fine){ .btn-gold:hover{transform:translateY(-2px);} }
+  .btn-gold:active{transform:translateY(1px) scale(.97);}
+  .nav-cta{padding:11px 20px; font-size:14px;}
+
+  /* ---------- hero ---------- */
+  .hero{padding-block:56px 44px; display:grid; grid-template-columns:1.05fr 0.95fr; gap:48px; align-items:center; position:relative; z-index:1;}
+  h1{font-size:clamp(32px,4.8vw,54px); line-height:1.12; margin:0 0 20px;}
+  h1 .g{color:var(--gold);}
+  .hero .sub{font-size:16.5px; line-height:1.7; color:var(--lav); max-width:480px; margin:0 0 28px;}
+  .cta-row{display:flex; gap:14px; flex-wrap:wrap; margin-bottom:12px;}
+  .microcopy{font-size:13px; color:var(--lav-dim); font-weight:600;}
+
+  .portal-stage{position:relative; display:flex; align-items:center; justify-content:center; height:440px;}
+  .portal-glow{position:absolute; width:340px; height:340px; border-radius:999px;
+    background:radial-gradient(circle, rgba(245,181,66,0.35) 0%, rgba(245,181,66,0.08) 55%, transparent 75%);
+    filter:blur(2px);}
+  /* Impeccable critique P2 (2026-09-16): portal rings and avatar float were
+     two of seven concurrent looping animations competing for attention —
+     both are now static. Only the starfield twinkle and the testimonials
+     marquee still loop continuously (see P2 fix below). */
+  .portal-ring{position:absolute; width:290px; height:290px; border-radius:999px; border:1.5px solid var(--line);}
+  .avatar-frame-el{
+    position:relative; width:248px; height:248px; border-radius:50%; overflow:hidden;
+    box-shadow:0 0 0 4px rgba(245,181,66,0.35), 0 30px 60px -20px rgba(0,0,0,0.6);
+  }
+  .avatar-frame-el img{width:100%; height:100%; object-fit:cover; display:block;}
+  .chip{position:absolute; display:flex; flex-direction:column; gap:3px; background:rgba(20,26,61,0.88); border:1px solid var(--line); border-radius:16px; padding:10px 14px; backdrop-filter:blur(6px); font-weight:700; box-shadow:0 10px 24px -14px rgba(0,0,0,0.5); max-width:172px; text-align:center; line-height:1.35;}
+  .chip .en{color:var(--gold); font-size:12px; display:block;} .chip .he{color:var(--lav); font-weight:600; font-size:11.5px; display:block;}
+  .chip.c1{top:10px; right:-8px;} .chip.c2{bottom:56px; left:-28px;} .chip.c3{bottom:0; right:8px;}
+
+  /* ---------- demo video ---------- */
+  .video-frame{position:relative; max-width:760px; margin:32px auto 0; border-radius:28px; padding:3px;
+    background:linear-gradient(135deg, rgba(245,181,66,0.55), rgba(255,111,97,0.25), rgba(245,181,66,0.15));
+    box-shadow:0 30px 70px -30px rgba(0,0,0,0.65);}
+  .video-inner{position:relative; aspect-ratio:16/9; border-radius:26px; overflow:hidden;
+    background:
+      repeating-linear-gradient(135deg, rgba(255,255,255,0.03) 0 10px, transparent 10px 20px),
+      linear-gradient(160deg, #171B45 0%, #0E1130 100%);
+    display:flex; align-items:center; justify-content:center; flex-direction:column; gap:14px;}
+  .play-btn{width:76px; height:76px; border-radius:999px; background:linear-gradient(180deg, var(--gold-soft), var(--gold));
+    display:flex; align-items:center; justify-content:center; box-shadow:0 16px 34px -14px rgba(245,181,66,0.6);}
+  .video-caption{color:var(--lav); font-size:13.5px; font-weight:600; text-align:center; padding-inline:20px;}
+
+  /* ---------- section heads ---------- */
+  .section{padding-block:44px; position:relative; z-index:1;}
+  .section-head h2{font-size:clamp(26px,3.2vw,34px); margin:0 0 10px; max-width:600px;}
+  .section-head p{font-size:15.5px; color:var(--lav); margin:0; max-width:520px; line-height:1.6;}
+
+  /* ---------- chapters (timeline) ---------- */
+  .timeline{position:relative; margin-top:44px;}
+  /* Impeccable critique P2 (2026-09-16): the flowing spine and five
+     staggered pulsing nodes were 6 of the 7 concurrent loops flagged by
+     both the detector (dark-glow x7) and the design review (Aesthetic 2/4).
+     Now static — the gold glow still reads as "alive" without animating. */
+  .spine{position:absolute; top:0; bottom:0; right:50%; width:2px; transform:translateX(50%);
+    background:linear-gradient(180deg, transparent, var(--line) 6%, var(--gold) 45%, var(--line) 94%, transparent);}
+  .ch-row{display:grid; grid-template-columns:1fr 1fr; gap:0; align-items:center; margin-bottom:38px; position:relative;}
+  .ch-row:last-child{margin-bottom:0;}
+  .ch-node{position:absolute; right:50%; top:50%; width:14px; height:14px; border-radius:999px; transform:translate(50%,-50%);
+    background:var(--gold); box-shadow:0 0 0 6px rgba(245,181,66,0.16), 0 0 16px 2px rgba(245,181,66,0.5); z-index:2;}
+  .ch-card{background:linear-gradient(180deg, rgba(27,35,82,0.6), rgba(20,26,61,0.5)); border:1px solid var(--line); border-radius:24px; padding:26px; backdrop-filter:blur(4px);}
+  .ch-card .tag{font-family:'Alegreya',serif; font-weight:700; font-size:13px; color:var(--gold); margin-bottom:8px;}
+  .ch-card h3{font-size:18px; font-weight:800; margin:0 0 8px; color:var(--cream); font-family:'Assistant';}
+  .ch-card p{font-size:14.5px; color:var(--lav); line-height:1.6; margin:0;}
+  /* CSS Grid line 1 sits on the RIGHT under direction:rtl (matches inline-start) */
+  .ch-row.right .ch-card{grid-column:1; margin-left:44px;}
+  .ch-row.left .ch-card{grid-column:2; margin-right:44px;}
+
+  /* ---------- steps ---------- */
+  .steps{display:grid; grid-template-columns:repeat(3,1fr); gap:18px; margin-top:26px;}
+  .steps .step:nth-child(2){transition-delay:60ms;}
+  .steps .step:nth-child(3){transition-delay:120ms;}
+  .step{background:linear-gradient(180deg, rgba(27,35,82,0.55), rgba(20,26,61,0.45)); border:1px solid var(--line); border-inline-start:3px solid var(--gold); border-radius:20px; padding:24px;}
+  .step .n{font-family:'Alegreya',serif; font-size:28px; font-weight:800; color:var(--gold); margin-bottom:10px;}
+  .step h3{font-size:16.5px; font-weight:800; margin:0 0 8px; color:var(--cream);}
+  .step p{font-size:14px; color:var(--lav); line-height:1.65; margin:0;}
+
+  /* ---------- testimonials marquee ----------
+     Impeccable critique P1 (2026-09-16, verification caveat): both review
+     agents saw this render as a blank gap on some viewports and couldn't
+     confirm whether it was a real bug or a tooling artifact (mask-image +
+     an animated transform inside overflow:hidden is a known flaky
+     combination in older WebKit). Fixed defensively either way: dropped
+     mask-image for solid gradient-overlay edge fades (broader support,
+     no compositing interaction with the animated track), and added
+     will-change to keep the animation on its own GPU layer. */
+  .marquee-wrap{position:relative; overflow:hidden; margin-top:24px;}
+  .marquee-wrap::before, .marquee-wrap::after{
+    content:''; position:absolute; top:0; bottom:0; width:56px; z-index:2; pointer-events:none;
+  }
+  .marquee-wrap::before{right:0; background:linear-gradient(to left, #0F1330, transparent);}
+  .marquee-wrap::after{left:0; background:linear-gradient(to right, #141A3D, transparent);}
+  .marquee-track{display:flex; gap:16px; width:max-content; will-change:transform; backface-visibility:hidden; -webkit-backface-visibility:hidden;}
+  @media (prefers-reduced-motion: no-preference){ .marquee-track{animation:marquee 50s linear infinite;} .marquee-wrap:hover .marquee-track{animation-play-state:paused;} }
+  @keyframes marquee{from{transform:translateX(0) translateZ(0);} to{transform:translateX(50%) translateZ(0);}}
+  .t-card{flex:0 0 280px; background:linear-gradient(180deg, rgba(27,35,82,0.55), rgba(20,26,61,0.45)); border:1px solid var(--line); border-radius:18px; padding:20px;}
+  .t-card .stars{color:var(--gold); font-size:13px; margin-bottom:10px; letter-spacing:2px;}
+  .t-card p.quote{font-size:14px; color:var(--cream); line-height:1.6; margin:0 0 14px; min-height:76px;}
+  .t-card .who{display:flex; align-items:center; gap:10px;}
+  .t-card .who .av{width:34px; height:34px; border-radius:999px; background:rgba(245,181,66,0.14); color:var(--gold); display:flex; align-items:center; justify-content:center; font-size:14px; font-weight:800; flex-shrink:0;}
+  .t-card .who .meta{font-size:12.5px; color:var(--lav-dim); line-height:1.4;}
+  .t-card .who .meta b{color:var(--lav); font-weight:700; display:block; font-size:13px;}
+
+  /* ---------- finale — the one deliberate light bloom ---------- */
+  .finale-wrap{position:relative; z-index:1; padding-block:20px 10px;}
+  .finale{
+    border-radius:32px; padding:72px 36px; text-align:center; position:relative; overflow:hidden;
+    background:radial-gradient(120% 160% at 50% 30%, #FFF6E0 0%, #FDE7B8 32%, #F5B542 68%, #E39A2C 100%);
+  }
+  .finale h2{position:relative; color:var(--ink-on-gold); font-family:'Alegreya',serif; font-weight:800; font-size:clamp(28px,3.8vw,40px); margin:0 0 14px;}
+  .finale p{position:relative; color:#5B4326; font-size:16px; margin:0 0 30px;}
+  .finale .btn-dark{
+    position:relative; display:inline-flex; align-items:center; gap:9px; background:var(--ink-on-gold); color:var(--cream);
+    font-weight:800; font-size:17px; padding:17px 32px; border-radius:999px; border:none; cursor:pointer;
+    box-shadow:0 18px 34px -16px rgba(36,22,56,0.5); text-decoration:none; transition:transform .15s ease;
+  }
+  @media (hover: hover) and (pointer: fine){ .finale .btn-dark:hover{transform:translateY(-2px);} }
+  .finale .btn-dark:active{transform:translateY(1px) scale(.97);}
+
+  footer{padding-block:32px 56px; text-align:center; color:var(--lav-dim); font-size:13px; position:relative; z-index:1;}
+
+  @media (max-width:860px){
+    .hero{grid-template-columns:1fr; padding-top:36px;}
+    .portal-stage{order:-1; height:320px;}
+    .spine{right:20px; transform:none;}
+    .ch-row{grid-template-columns:1fr;}
+    .ch-node{right:20px; transform:translate(50%,-50%);}
+    .ch-row.right .ch-card, .ch-row.left .ch-card{grid-column:1; margin-inline:0; margin-right:48px; margin-left:0;}
+    .steps{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+
+<div class="stars"></div>
+
+<nav>
+  <div class="wrap inner">
+    <div class="wordmark"><span class="spark"></span>ספיקי</div>
+    <a href="#cta" class="btn-gold nav-cta">נסו בחינם</a>
+  </div>
+</nav>
+
+<header class="wrap hero">
+  <div class="reveal">
+    <h1 class="disp">לא עוד שיעור.<br>לומדים לדבר <span class="g">אנגלית נכונה</span> דרך שיחה ומשחק.</h1>
+    <p class="sub">ספיקי מדבר עם הילד שלכם בצורה טבעית, שיחות קלילות וכיפיות, על כל מה שמעניין אותו, בלי שזה מרגיש כמו שיעור לימוד. ספיקי מדבר עברית כבסיס על מנת לתת לילד הבנה ובטחון, ומשלב אנגלית בצורה מדורגת ככל שהילד מרגיש יותר בנוח בשיחה.</p>
+    <div class="cta-row">
+      <a href="#cta" class="btn-gold">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#241638" stroke-width="2.3" stroke-linecap="round"><path d="M12 15a3 3 0 0 0 3-3V6a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3Z"/><path d="M19 11a7 7 0 0 1-14 0M12 19v3"/></svg>
+        נסו בחינם עכשיו
+      </a>
+    </div>
+    <div class="microcopy">30 דקות ניסיון חינם · ללא התחייבות או אשראי</div>
+  </div>
+
+  <div class="portal-stage reveal">
+    <div class="portal-glow"></div>
+    <div class="portal-ring"></div>
+    <div class="portal-ring d2"></div>
+    <div class="avatar-frame-el">
+      <img src="images/speaky-avatar.png" alt="ספיקי" />
+    </div>
+    <div class="chip c1"><span class="en" dir="ltr">Hi, my name is Speaky</span><span class="he" dir="rtl">היי, קוראים לי ספיקי</span></div>
+    <div class="chip c2"><span class="en" dir="ltr">Do you want to be my friend?</span><span class="he" dir="rtl">רוצים להיות חברים שלי?</span></div>
+    <div class="chip c3"><span class="en" dir="ltr">Practicing english is fun</span><span class="he" dir="rtl">לתרגל אנגלית זה כיף</span></div>
+  </div>
+</header>
+
+<section class="wrap section" style="padding-block:0 44px;">
+  <div class="section-head reveal" style="text-align:center; margin-inline:auto;">
+    <h2 class="disp" style="margin-inline:auto; max-width:680px;">מדברים עם ספיקי על כל מה שמעניין את הילד.</h2>
+    <p style="margin-inline:auto; max-width:560px;">שיחה אמיתית, שבונה כישורי שפה שעובדים בעולם האמיתי.</p>
+  </div>
+  <div class="video-frame reveal">
+    <div class="video-inner">
+      <video id="demoVideo" playsinline preload="metadata" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover;">
+        <source src="videos/speaky_teaser_16x9_not%20final.mp4" type="video/mp4">
+      </video>
+      <div class="play-btn" id="playOverlay" style="position:relative; cursor:pointer;">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="#241638"><path d="M8 5v14l11-7z"/></svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="wrap section">
+  <div class="section-head reveal">
+    <h2 class="disp">חמישה דברים שהופכים את ספיקי לייחודי ושונה מכל אפליקציית לימוד אחרת</h2>
+  </div>
+
+  <div class="timeline">
+    <div class="spine"></div>
+
+    <div class="ch-row right reveal">
+      <div class="ch-node"></div>
+      <div class="ch-card">
+        <h3>לומדים בצורה טבעית</h3>
+        <p>בלי תרגילים ובלי שינון. אנגלית נספגת מתוך שיחה אמיתית, בדיוק כמו שלומדים שפה בחיים.</p>
+      </div>
+    </div>
+
+    <div class="ch-row left reveal">
+      <div class="ch-node"></div>
+      <div class="ch-card">
+        <h3>מכל מקום, בכל מכשיר, בכל זמן</h3>
+        <p>אפשר לדבר עם ספיקי מתי שרוצים. מהמחשב, מהטאבלט או מהפלאפון, בבית או בדרך.</p>
+      </div>
+    </div>
+
+    <div class="ch-row right reveal">
+      <div class="ch-node"></div>
+      <div class="ch-card">
+        <h3>חוויה מותאמת אישית</h3>
+        <p>ספיקי מתאים את השפה והקצב לרמה של הילד שלכם, גמיש וקשוב לצרכיו ממש כמו מורה אמיתי. אפשר לבחור רמה מותאמת אישית החל מכיתה א׳ ועד בוגר.</p>
+      </div>
+    </div>
+
+    <div class="ch-row left reveal">
+      <div class="ch-node"></div>
+      <div class="ch-card">
+        <h3>הרגשה של חבר אישי</h3>
+        <p>קל להתחבר לספיקי, וכפועל יוצא מכך להנות ולרצות להמשיך לדבר איתו עוד ועוד.</p>
+      </div>
+    </div>
+
+    <div class="ch-row right reveal">
+      <div class="ch-node"></div>
+      <div class="ch-card">
+        <h3>חוויה של משחק ועניין</h3>
+        <p>לצד השיחות, מעטפת החוויה שמה דגש על אופי משחקי, פרסים, דמויות והרפתקה מתמשכת שמייצרת רצון אצל הילד להמשיך ולתרגל אנגלית לאורך זמן.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="wrap section">
+  <div class="section-head reveal">
+    <h2 class="disp">איך מתחילים</h2>
+    <p>3 דקות בלי הרשמה מסובכת</p>
+  </div>
+  <div class="steps">
+    <div class="step reveal">
+      <div class="n">01</div>
+      <h3>נרשמים עם אימייל בלבד ליצירת חשבון אישי</h3>
+      <p>לוחצים על הכפתור "התחילו לדבר אנגלית עם ספיקי" למטה, יוצרים חשבון עם גוגל ובוחרים את הרמה הרצויה בהתאם לגיל הילד. אין התחייבות, תראו קודם שהילד שלכם מקבל ערך ונהנה ללמוד אנגלית.</p>
+    </div>
+    <div class="step reveal">
+      <div class="n">02</div>
+      <h3>עושים שיחה ראשונה להכיר את ספיקי</h3>
+      <p>הילד מדבר עם ספיקי על כל נושא בעולם, מתחיל מעברית, בהדרגה ספיקי מלמד אותו לומר באנגלית את המשפטים שמעניינים אותו, ולבנות שיחה. אפשר גם לבחור נושאים מראש, ולתרגל בצורה יותר ממוקדת עליהם.</p>
+    </div>
+    <div class="step reveal">
+      <div class="n">03</div>
+      <h3>חוזרים, ומתחזקים חברות</h3>
+      <p>כל שיחה נבנית על הקודמת. ספיקי זוכר, מתקדם עם הילד, בונה איתו הצלחות, ומרגיש כמו חבר. הילד נהנה מהמשחק והאנגלית שלו נבנית ומשתפרת כל הזמן.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Real parent quotes (Roy, 2026-09-17) — replaces the P0-hidden placeholder
+     section from the Impeccable critique. Display names are invented for
+     privacy; quote content is real, lightly tightened for length/clarity. -->
+<section class="wrap section">
+  <div class="section-head reveal">
+    <h2 class="disp">מה הורים אומרים</h2>
+  </div>
+  <div class="marquee-wrap">
+    <div class="marquee-track" id="tTrack"></div>
+  </div>
+</section>
+
+<div class="wrap finale-wrap" id="cta">
+  <div class="finale reveal">
+    <h2>נסו בחינם, ותרגישו את הקסם.</h2>
+    <p>ללא התחייבות, הילד שלכם יכול להתחיל לדבר עם ספיקי עכשיו.</p>
+    <!-- Impeccable critique P0 (2026-09-16): was href="#", a dead link at the
+         page's actual conversion moment. Points at the real (staging) signup
+         flow for now — swap to the production domain once purchased and
+         confirmed (see PRODUCT.md Operating Context). -->
+    <a href="https://speaky-13068299123.us-central1.run.app/signup" class="btn-dark">
+      <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#FBF4E4" stroke-width="2.3" stroke-linecap="round"><path d="M12 15a3 3 0 0 0 3-3V6a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3Z"/><path d="M19 11a7 7 0 0 1-14 0M12 19v3"/></svg>
+      התחילו לדבר אנגלית עם ספיקי
+    </a>
+  </div>
+</div>
+
+<footer>ספיקי © 2026 · כל הזכויות שמורות · <a href="https://speaky-13068299123.us-central1.run.app/terms" style="color:inherit;">תנאי שימוש</a> · <a href="https://speaky-13068299123.us-central1.run.app/privacy" style="color:inherit;">מדיניות פרטיות</a></footer>
+
+<script>
+  // Real parent quotes (Roy, 2026-09-17). Display names invented for privacy.
+  var testimonials = [
+    { q: "הבן שלי סוף סוף נהנה ללמוד אנגלית — החוויה טבעית לו, כי הוא מדבר על דברים שבאמת מעניינים אותו.", who: "ענת", meta: "אמא לבן בכיתה ד׳" },
+    { q: "הייתי קצת סקפטי בהתחלה אם הבן שלי בכלל יתעניין. בפועל הוא מבקש בעצמו לדבר עם ספיקי כשמשעמם לו, בלי שצריך להכריח אותו.", who: "עידו", meta: "אבא לבן בכיתה ה׳" },
+    { q: "שלושה שבועות לתוך התהליך, הבת שלי כבר מחברת משפטים שלמים ומתחילה שיחה באנגלית בעצמה. מרגישים את השיפור כל יום.", who: "שירן", meta: "אמא לבת בכיתה ג׳" },
+    { q: "מעל הכל, זה כיף לו. ניסיתי הרבה אפליקציות ומורים פרטיים, ועם ספיקי אני רואה שהוא באמת נהנה ללמוד אנגלית.", who: "גיא", meta: "אבא לבן בכיתה ו׳" },
+    { q: "מה שמדהים זה שספיקי לומד להכיר את הילדה, להתחבר אליה, ומרגיש כמו חבר אמיתי. זה גורם לה לרצות לדבר איתו באנגלית שוב ושוב.", who: "נטע", meta: "אמא לבת בכיתה ב׳" },
+    { q: "ברמת האנגלית, ספיקי סבלני ומלמד — שם דגש על מה שבאמת רלוונטי לשיחה יומיומית: בניית משפטים נכונה, אוצר מילים ודקדוק. הכל בגישה נעימה ומשחקית, גם כשצריך לתקן.", who: "אורי", meta: "אבא לבן בכיתה ח׳" },
+    { q: "פשוט תנסו, צריך להרגיש את החוויה בעצמכם. הילדה שלי ממש מכורה לדבר אנגלית עם ספיקי.", who: "מאיה", meta: "אמא לבת בכיתה א׳" },
+    { q: "ראיתי את האנגלית של הילדה שלי משתפרת, ועודדתי גם את אחיה הגדול לחזק את הבסיס שהיה לו. גם אני בעצמי עושה שיחות עם ספיקי ומחזקת את האנגלית שלי.", who: "רותם", meta: "אמא לשני ילדים, כיתה ג׳ ותיכון" },
+    { q: "ספיקי מעלה את הביטחון של הילד — הוא לא חושש להגיד משפטים באנגלית, לשאול שאלות, ולא מפחד לטעות. התהליך עובד, ובגדול.", who: "תומר", meta: "אבא לבן בכיתה ד׳" },
+    { q: "גישת הלימוד וחוויית השימוש עם ספיקי פשוט עובדת, ומביאה ערך ללימוד אנגלית שמחזיק לאורך זמן, ולא ליום־יומיים.", who: "הילה", meta: "אמא לבת בכיתה ה׳" }
+  ];
+  var track = document.getElementById('tTrack');
+  if (track) {
+    function initial(name){ return name.charAt(0); }
+    var html = testimonials.concat(testimonials).map(function(t){
+      return '<div class="t-card">' +
+        '<div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>' +
+        '<p class="quote">' + '“' + t.q + '”' + '</p>' +
+        '<div class="who"><div class="av">' + initial(t.who) + '</div>' +
+        '<div class="meta"><b>' + t.who + '</b>' + t.meta + '</div></div>' +
+      '</div>';
+    }).join('');
+    track.innerHTML = html;
+  }
+
+  try {
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+    }, {threshold:0.15});
+    document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+  } catch(e) {}
+
+  var demoVideo = document.getElementById('demoVideo');
+  var playOverlay = document.getElementById('playOverlay');
+  if (demoVideo && playOverlay) {
+    playOverlay.addEventListener('click', function(){
+      demoVideo.controls = true;
+      demoVideo.play();
+      playOverlay.style.display = 'none';
+    });
+    demoVideo.addEventListener('ended', function(){
+      demoVideo.controls = false;
+      demoVideo.currentTime = 0;
+      playOverlay.style.display = 'flex';
+    });
+  }
+</script>
+
+</body>
+</html>
