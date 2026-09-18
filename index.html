@@ -199,7 +199,6 @@
   .t-card{flex:0 0 280px; direction:rtl; display:flex; flex-direction:column; background:linear-gradient(180deg, rgba(27,35,82,0.55), rgba(20,26,61,0.45)); border:1px solid var(--line); border-radius:18px; padding:20px;}
   .t-card p.quote{font-size:14px; color:var(--cream); line-height:1.6; margin:0 0 14px;}
   .t-card .who{display:flex; align-items:center; gap:10px; margin-top:auto;}
-  .t-card .who .av{width:34px; height:34px; border-radius:999px; background:rgba(245,181,66,0.14); color:var(--gold); display:flex; align-items:center; justify-content:center; font-size:14px; font-weight:800; flex-shrink:0;}
   .t-card .who .meta{font-size:12.5px; color:var(--lav-dim); line-height:1.4;}
   .t-card .who .meta b{color:var(--lav); font-weight:700; display:block; font-size:13px;}
 
@@ -409,11 +408,10 @@
   ];
   var track = document.getElementById('tTrack');
   if (track) {
-    function initial(name){ return name.charAt(0); }
     var html = testimonials.concat(testimonials).map(function(t){
       return '<div class="t-card">' +
         '<p class="quote">' + '“' + t.q + '”' + '</p>' +
-        '<div class="who"><div class="av">' + initial(t.who) + '</div>' +
+        '<div class="who">' +
         '<div class="meta"><b>' + t.who + '</b>' + t.meta + '</div></div>' +
       '</div>';
     }).join('');
