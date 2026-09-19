@@ -35,6 +35,13 @@
     --lav-dim:#7A7FAA;
     --line:rgba(245,181,66,0.22);
     --ink-on-gold:#241638;
+    /* emil-design-eng step 3 (2026-09-19): named custom easing curves so the
+       whole page draws from the same two, instead of ad hoc cubic-beziers
+       scattered per rule. Values are Emil Kowalski's own recommended
+       stronger variants of the standard curves — built-in CSS easings are
+       too weak to read as intentional. */
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
   }
   *{box-sizing:border-box;}
   html{scroll-behavior:smooth;}
@@ -70,12 +77,12 @@
       radial-gradient(1.2px 1.2px at 95% 55%, #fff, transparent);
     background-repeat:no-repeat;
   }
-  @media (prefers-reduced-motion: no-preference){ .stars{animation:twinkle 6s ease-in-out infinite;} }
+  @media (prefers-reduced-motion: no-preference){ .stars{animation:twinkle 6s var(--ease-in-out) infinite;} }
   @keyframes twinkle{0%,100%{opacity:.4;} 50%{opacity:.75;}}
 
   .reveal{opacity:1; transform:none;}
   @media (prefers-reduced-motion: no-preference){
-    .reveal{opacity:0; transform:translateY(20px); transition:opacity .55s cubic-bezier(.16,1,.3,1), transform .55s cubic-bezier(.16,1,.3,1);}
+    .reveal{opacity:0; transform:translateY(20px); transition:opacity .55s var(--ease-out), transform .55s var(--ease-out);}
     .reveal.in{opacity:1; transform:translateY(0);}
   }
 
@@ -133,8 +140,21 @@
       repeating-linear-gradient(135deg, rgba(255,255,255,0.03) 0 10px, transparent 10px 20px),
       linear-gradient(160deg, #171B45 0%, #0E1130 100%);
     display:flex; align-items:center; justify-content:center; flex-direction:column; gap:14px;}
+  /* emil-design-eng steps 3+4 (2026-09-19): the play button now actually
+     triggers something (it used to be a static placeholder) so it earns
+     real feedback per the "buttons must feel responsive" component
+     principle — scale(0.97) on :active, 160ms ease-out, hover gated behind
+     the touch-device media query like the other buttons on this page. The
+     show/hide on click/end was an instant `display` swap (can't transition);
+     switched to an opacity+pointer-events toggle so it fades instead of
+     jump-cutting — "preventing jarring changes" is one of the framework's
+     valid animation purposes. */
   .play-btn{width:76px; height:76px; border-radius:999px; background:linear-gradient(180deg, var(--gold-soft), var(--gold));
-    display:flex; align-items:center; justify-content:center; box-shadow:0 16px 34px -14px rgba(245,181,66,0.6);}
+    display:flex; align-items:center; justify-content:center; box-shadow:0 16px 34px -14px rgba(245,181,66,0.6);
+    transition:transform 160ms var(--ease-out), opacity 200ms ease;}
+  @media (hover: hover) and (pointer: fine){ .play-btn:hover{transform:scale(1.05);} }
+  .play-btn:active{transform:scale(.97);}
+  .play-btn.is-hidden{opacity:0; pointer-events:none;}
   .video-caption{color:var(--lav); font-size:13.5px; font-weight:600; text-align:center; padding-inline:20px;}
 
   /* ---------- section heads ---------- */
@@ -433,12 +453,12 @@
     playOverlay.addEventListener('click', function(){
       demoVideo.controls = true;
       demoVideo.play();
-      playOverlay.style.display = 'none';
+      playOverlay.classList.add('is-hidden');
     });
     demoVideo.addEventListener('ended', function(){
       demoVideo.controls = false;
       demoVideo.currentTime = 0;
-      playOverlay.style.display = 'flex';
+      playOverlay.classList.remove('is-hidden');
     });
   }
 
