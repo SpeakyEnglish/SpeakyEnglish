@@ -107,7 +107,7 @@
   /* ---------- hero ---------- */
   .hero{padding-block:56px 44px; display:grid; grid-template-columns:1.05fr 0.95fr; gap:48px; align-items:center; position:relative; z-index:1;}
   h1{font-size:clamp(32px,4.8vw,54px); line-height:1.12; margin:0 0 20px;}
-  h1 .g{color:var(--gold);}
+  h1 .g{color:var(--gold); white-space:nowrap;}
   .hero .sub{font-size:16.5px; line-height:1.7; color:var(--lav); max-width:480px; margin:0 0 28px;}
   .cta-row{display:flex; gap:14px; flex-wrap:wrap; margin-bottom:12px;}
   .microcopy{font-size:13px; color:var(--lav-dim); font-weight:600;}
@@ -213,10 +213,23 @@
      Pinning the track itself to ltr makes "left" mean left, so a plain
      negative translateX is the standard, robust marquee technique — no more
      dir-dependent guessing. Card content stays RTL via .t-card below. */
-  .marquee-track{display:flex; direction:ltr; gap:16px; width:max-content; will-change:transform; backface-visibility:hidden; -webkit-backface-visibility:hidden;}
-  @media (prefers-reduced-motion: no-preference){ .marquee-track{animation:marquee 50s linear infinite;} .marquee-wrap:hover .marquee-track{animation-play-state:paused;} }
-  @keyframes marquee{from{transform:translateX(0) translateZ(0);} to{transform:translateX(-50%) translateZ(0);}}
-  .t-card{flex:0 0 280px; direction:rtl; display:flex; flex-direction:column; background:linear-gradient(180deg, rgba(27,35,82,0.55), rgba(20,26,61,0.45)); border:1px solid var(--line); border-radius:18px; padding:20px;}
+  /* Roy 2026-09-24 ("gets stuck and then continues"): removed the
+     :hover -> animation-play-state:paused rule. On phones :hover sticks after
+     a tap, so one tap froze the strip until the next tap elsewhere; on
+     desktop it froze under a resting pointer, and every pause/resume
+     re-timed the running animation. Spacing is now a per-card margin, not
+     flex gap, so the track is two identical halves (10 x 296px) and one
+     loop lands exactly on the second copy (gap left the loop 8px short).
+     Roy's 09-24 recording still showed a one-frame 20px backward jump with
+     no scroll and nothing else moving: Chrome re-syncing the running
+     animation. The loop distance is now absolute px (set by the script
+     from the card count; 2960px fallback = 10 x 296) instead of -50%, so a
+     late web-font swap that changes the cards' height can't make Chrome
+     re-resolve the keyframes mid-flight. */
+  .marquee-track{display:flex; direction:ltr; width:max-content; will-change:transform; backface-visibility:hidden; -webkit-backface-visibility:hidden;}
+  @media (prefers-reduced-motion: no-preference){ .marquee-track{animation:marquee 50s linear infinite;} }
+  @keyframes marquee{from{transform:translateX(0) translateZ(0);} to{transform:translateX(calc(-1 * var(--marquee-shift, 2960px))) translateZ(0);}}
+  .t-card{flex:0 0 280px; margin-right:16px; direction:rtl; display:flex; flex-direction:column; background:linear-gradient(180deg, rgba(27,35,82,0.55), rgba(20,26,61,0.45)); border:1px solid var(--line); border-radius:18px; padding:20px;}
   .t-card p.quote{font-size:14px; color:var(--cream); line-height:1.6; margin:0 0 14px;}
   .t-card .who{display:flex; align-items:center; gap:10px; margin-top:auto;}
   .t-card .who .meta{font-size:12.5px; color:var(--lav-dim); line-height:1.4;}
@@ -273,7 +286,7 @@
 
 <header class="wrap hero">
   <div class="reveal">
-    <h1 class="disp">לא עוד שיעור.<br>לומדים לדבר <span class="g">אנגלית</span> דרך שיחה ומשחק.</h1>
+    <h1 class="disp">לא עוד שיעור.<br>לומדים <span class="g">לדבר אנגלית</span> דרך שיחה ומשחק.</h1>
     <p class="sub">ספיקי מדבר עם הילד שלכם בצורה טבעית, שיחות קלילות וכיפיות, בלי שזה מרגיש כמו שיעור.<br><br>ספיקי משלב אנגלית בהדרגה ככל שהילד מרגיש בנוח יותר בשיחה, ומסביר בעברית בהתאם לרמתו.</p>
     <div class="cta-row">
       <a href="#cta" class="btn-gold">
@@ -446,6 +459,8 @@
       '</div>';
     }).join('');
     track.innerHTML = html;
+    // one loop = one full set of cards: 280px card + 16px margin each
+    track.style.setProperty('--marquee-shift', (testimonials.length * 296) + 'px');
   }
 
   try {
