@@ -244,8 +244,22 @@
      card, with the gold as a glow BEHIND it (same technique as .portal-glow),
      plus a hint of the coral accent — the "bloom" is light emerging from the
      dark, not a separate pastel panel. */
-  .finale-wrap{position:relative; z-index:1; padding-block:20px 10px;}
+  /* Speaky rises from behind the finale card (Roy 2026-09-24: "add Speaky to
+     the נסו בחינם box, beautifully"). A real cut-out of the avatar art, not a
+     circle crop; the card covers him from the chest down, so on reveal he
+     glides up out of it into the card's own gold light. --spk-w sets his
+     width; the wrap's top padding = the visible part (76% of his height). */
+  .finale-wrap{position:relative; z-index:1; --spk-w:320px; padding-block:calc(var(--spk-w) * 1.0857 * 0.76 + 16px) 10px;}
+  .finale-speaky{position:absolute; z-index:0; top:16px; left:0; right:0; margin-inline:auto; width:var(--spk-w); pointer-events:none;}
+  .finale-speaky img{display:block; width:100%; height:auto;}
+  .finale-speaky::before{content:''; position:absolute; z-index:-1; inset:-6% -38% 22% -38%;
+    background:radial-gradient(closest-side at 50% 46%, rgba(245,181,66,0.34) 0%, rgba(245,181,66,0.12) 46%, rgba(245,181,66,0) 74%);}
+  @media (prefers-reduced-motion: no-preference){
+    .finale-speaky.reveal{transform:translateY(56px); transition:opacity .7s var(--ease-out), transform 1.1s var(--ease-out);}
+    .finale-speaky.reveal.in{transform:translateY(0);}
+  }
   .finale{
+    z-index:1;
     border-radius:32px; padding:72px 36px; text-align:center; position:relative; overflow:hidden;
     border:1px solid var(--line);
     background:
@@ -253,7 +267,7 @@
       radial-gradient(70% 90% at 100% 115%, rgba(255,111,97,0.16) 0%, rgba(255,111,97,0) 60%),
       linear-gradient(180deg, var(--night-3) 0%, var(--night-2) 100%);
   }
-  .finale h2{position:relative; color:var(--cream); font-family:'Alegreya',serif; font-weight:800; font-size:clamp(28px,3.8vw,40px); margin:0 0 14px;}
+  .finale h2{position:relative; color:var(--cream); font-family:'Alegreya',serif; font-weight:800; font-size:clamp(28px,3.8vw,40px); margin:0 0 14px; text-wrap:balance;}
   .finale p{position:relative; color:var(--lav); font-size:16px; margin:0 0 30px;}
   .finale .btn-gold{position:relative; padding:17px 32px; font-size:17px;}
 
@@ -263,6 +277,7 @@
     .hero{grid-template-columns:1fr; padding-top:36px;}
     .cta-row{justify-content:center;}
     .finale{padding-inline:20px;}
+    .finale-wrap{--spk-w:220px;}
     .finale .btn-gold{white-space:normal; font-size:15.5px; padding:15px 22px; line-height:1.35; text-align:center;}
     .portal-stage{order:-1; height:320px;}
     .spine{right:20px; transform:none;}
@@ -422,6 +437,12 @@
 </section>
 
 <div class="wrap finale-wrap" id="cta">
+  <div class="finale-speaky reveal" aria-hidden="true">
+    <picture>
+      <source srcset="images/speaky-cutout.webp" type="image/webp">
+      <img src="images/speaky-cutout.png" alt="" width="560" height="608" loading="lazy" decoding="async">
+    </picture>
+  </div>
   <div class="finale reveal">
     <h2>נסו בחינם, ותרגישו את הקסם.</h2>
     <p>ללא התחייבות, הילד שלכם יכול להתחיל לדבר עם ספיקי עכשיו.</p>
