@@ -532,6 +532,29 @@
       });
     }, { passive: true });
   } catch(e) {}
+
+  // First-party funnel (2026-10-04): tell the Speaky app this browser visited,
+  // and pass the same visitor id in the sign-up link so the app's funnel sees
+  // the visit and the sign-up as one person. One random id per browser, no
+  // personal data. Never blocks or breaks the page if it fails.
+  try {
+    var APP = 'https://speaky-861335983600.us-central1.run.app';
+    var visitorId = localStorage.getItem('speaky_lp_id');
+    if (!visitorId) {
+      visitorId = crypto.randomUUID();
+      localStorage.setItem('speaky_lp_id', visitorId);
+    }
+    document.querySelectorAll('a[href*="/signup?src=landing"]').forEach(function(a){
+      if (a.href.indexOf('fid=') === -1) a.href += '&fid=' + visitorId;
+    });
+    if (!sessionStorage.getItem('speaky_lp_sent')) {
+      sessionStorage.setItem('speaky_lp_sent', '1');
+      var payload = JSON.stringify({ stage: 'landing_viewed', funnelId: visitorId, src: 'landing' });
+      if (!(navigator.sendBeacon && navigator.sendBeacon(APP + '/api/registration-event', payload))) {
+        fetch(APP + '/api/registration-event', { method: 'POST', mode: 'no-cors', keepalive: true, body: payload });
+      }
+    }
+  } catch(e) {}
 </script>
 
 </body>
